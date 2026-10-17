@@ -1,0 +1,138 @@
+---
+source: tests/render.rs
+expression: ctx
+---
+[
+  {
+    "air_date": "2005-04-30",
+    "audio": [
+      {
+        "channels": 2,
+        "channels_label": "2.0",
+        "codec": "aac",
+        "default": true,
+        "language": "fre",
+        "profile": "",
+        "title": ""
+      }
+    ],
+    "audio_main": {
+      "channels": 2,
+      "channels_label": "2.0",
+      "codec": "aac",
+      "default": true,
+      "language": "fre",
+      "profile": "",
+      "title": ""
+    },
+    "bitrate": 6000,
+    "container": "mkv",
+    "content_rating": "PG",
+    "directors": [],
+    "duration": 7260000,
+    "duration_min": 121,
+    "episode": 1,
+    "episode_title": "Heat",
+    "ext": "mkv",
+    "genres": [
+      "Comédie"
+    ],
+    "ids": {
+      "plex": 203,
+      "plex_guid": "plex://episode/1"
+    },
+    "kind": "episode",
+    "library": "Séries",
+    "library_id": 2,
+    "original_title": "",
+    "part": 1,
+    "parts_total": 1,
+    "path": "<TMP>/data/tv/Kaamelott/k101.mkv",
+    "plex_path": "/data/tv/Kaamelott/k101.mkv",
+    "root": "<TMP>/data/tv",
+    "season": 1,
+    "show": {
+      "ids": {
+        "plex": 201,
+        "plex_guid": "plex://show/k",
+        "tvdb": "79175"
+      },
+      "title": "Kaamelott",
+      "year": 2005
+    },
+    "size": 400,
+    "sort_title": "Heat",
+    "studio": "Studio",
+    "subs": [],
+    "title": "Heat",
+    "version": 1,
+    "versions_total": 1,
+    "video": {
+      "aspect": 1.78,
+      "codec": "h264",
+      "fps": 25.0,
+      "hdr": "",
+      "height": 576,
+      "resolution": "576p",
+      "width": 720
+    },
+    "year": 2005
+  },
+  {
+    "air_date": "2005-04-30",
+    "audio": [],
+    "bitrate": 6000,
+    "container": "mkv",
+    "content_rating": "PG",
+    "directors": [],
+    "duration": 7260000,
+    "duration_min": 121,
+    "episode": 3,
+    "episode_end": 4,
+    "episode_title": "La Tarte aux myrtilles",
+    "ext": "mkv",
+    "genres": [
+      "Comédie"
+    ],
+    "ids": {
+      "plex": 204,
+      "plex_guid": "plex://episode/3"
+    },
+    "kind": "episode",
+    "library": "Séries",
+    "library_id": 2,
+    "original_title": "",
+    "part": 1,
+    "parts_total": 1,
+    "path": "<TMP>/data/tv/Kaamelott/k103-104.mkv",
+    "plex_path": "/data/tv/Kaamelott/k103-104.mkv",
+    "root": "<TMP>/data/tv",
+    "season": 1,
+    "show": {
+      "ids": {
+        "plex": 201,
+        "plex_guid": "plex://show/k",
+        "tvdb": "79175"
+      },
+      "title": "Kaamelott",
+      "year": 2005
+    },
+    "size": 450,
+    "sort_title": "La Tarte aux myrtilles",
+    "studio": "Studio",
+    "subs": [],
+    "title": "La Tarte aux myrtilles",
+    "version": 1,
+    "versions_total": 1,
+    "video": {
+      "aspect": 1.78,
+      "codec": "h264",
+      "fps": 25.0,
+      "hdr": "",
+      "height": 576,
+      "resolution": "576p",
+      "width": 720
+    },
+    "year": 2005
+  }
+]

@@ -1,0 +1,25 @@
+---
+source: tests/render.rs
+expression: "out.join(\"\\n\")"
+---
+plex: Le Fabuleux Destin d'Amélie Poulain (2001)/Le Fabuleux Destin d'Amélie Poulain (2001).mkv
+plex: Ocean's Eleven (2001)/Ocean's Eleven (2001) - pt1.avi
+plex: Ocean's Eleven (2001)/Ocean's Eleven (2001) - pt2.avi
+plex: Star Wars - Episode IV - A New Hope (1977)/Star Wars - Episode IV - A New Hope (1977) - 2160p.mkv
+plex: Star Wars - Episode IV - A New Hope (1977)/Star Wars - Episode IV - A New Hope (1977) - 480p.mkv
+plex: Face-Off (1997)/Face-Off (1997).mkv
+plex: Le Dîner de cons (1998)/Le Dîner de cons (1998).avi
+kodi: Le Fabuleux Destin d'Amélie Poulain (2001)/Le Fabuleux Destin d'Amélie Poulain (2001).mkv
+kodi: Ocean's Eleven (2001)/Ocean's Eleven (2001)-cd1.avi
+kodi: Ocean's Eleven (2001)/Ocean's Eleven (2001)-cd2.avi
+kodi: Star Wars Episode IV - A New Hope (1977)/Star Wars Episode IV - A New Hope (1977) - 2160p.mkv
+kodi: Star Wars Episode IV - A New Hope (1977)/Star Wars Episode IV - A New Hope (1977) - 480p.mkv
+kodi: Face Off (1997)/Face Off (1997).mkv
+kodi: Le Dîner de cons (1998)/Le Dîner de cons (1998).avi
+long: 2001/LE FABULEU/Le Fabuleux Destin d'Amélie Poulain [SDR 8bit] [Français, English] Comédie, Romance.mkv
+long: 2001/OCEAN'S EL/Ocean's Eleven [SDR] [English].avi
+long: 2001/OCEAN'S EL/Ocean's Eleven [SDR] [English].avi
+long: 1977/STAR WARS/Star Wars - Episode IV - A New Hope [DV 10bit] [English, Français].mkv
+long: 1977/STAR WARS/Star Wars - Episode IV - A New Hope [SDR] [English].mkv
+long: 1997/FACE-OFF/Face-Off [SDR] [Français].mkv
+long: 1998/LE DINER D/Le Dîner de cons [SDR].avi

@@ -1,0 +1,90 @@
+# plexfilerenamer configuration. Every key below is a default; delete what you don't change.
+# Templates are Jinja (minijinja): {{ var }}, {% if %}, filters with |.
+# Run `plexfilerenamer vars <db> --item <id|title>` to see every variable for an item.
+
+# Max file name length in bytes (extension included). Titles are shortened first,
+# technical info and extension never are.
+max_length = 255
+
+# What to do when two items target the same path, or the target already exists:
+#   fail   = refuse to apply anything until fixed (safest)
+#   skip   = leave the colliding files untouched, rename the rest
+#   suffix = add .v2, .v3… before the extension
+collision = "fail"
+
+# Remove source folders left empty after a move (never above the library root).
+clean_empty_dirs = false
+
+# Write a .plexmatch (title, year, tmdb/imdb/tvdb ids) in each target folder so Plex rematches for sure.
+write_plexmatch = false
+
+# Rewrite Plex paths (e.g. inside Docker) to paths on this machine. First matching entry wins.
+# [[path_map]]
+# from = "/movies"
+# to   = "/mnt/media/movies"
+
+# Regex replacements applied to every rendered path segment, before cleanup.
+# [[replace]]
+# pattern = "&"
+# with    = "and"
+
+[sidecars]
+enabled = true
+# <video stem>.<anything>.<ext> (and <stem>-<anything>.<ext>) follow the video file.
+extensions = ["srt", "ass", "ssa", "sub", "idx", "sup", "vtt", "smi", "nfo", "jpg", "jpeg", "png", "tbn"]
+# Moved with the folder, only when the source folder holds a single item.
+folder_files = ["poster.jpg", "poster.png", "folder.jpg", "fanart.jpg", "fanart.png", "backdrop.jpg",
+                "banner.jpg", "clearlogo.png", "landscape.jpg", "movie.nfo", "tvshow.nfo", ".plexmatch"]
+
+# Mapping tables are merged into the built-in ones: only list what you change.
+[mapping]
+# lang/langs default style: iso1 (FR), iso2 (FRE), iso2t (FRA), name (French), native (Français)
+language_style = "iso1"
+
+[mapping.vcodec]
+# mpeg2video = "MPEG2"
+# h264 = "x264"
+
+[mapping.acodec]
+# dca = "DTS"
+
+[mapping.languages]
+# Custom labels win over language_style. Keys may be any form: fr, fre, fra, French.
+# fre = "VFF"
+
+[mapping.resolutions]
+# label = nominal height. 1920x800 counts as 1080p, 720x576 as 576p.
+# "4K" = 2160
+
+[mapping.channels]
+# "6" = "5.1"
+
+[profiles.movies]
+kind = "movie"
+# Bind to libraries by name or id. Empty = every movie library not claimed by another profile.
+libraries = []
+folder = '''{{ title }} ({{ year }}){% if ids.tmdb %} {tmdb-{{ ids.tmdb }}}{% endif %}'''
+file = '''{{ title|scene }}.{{ year }}.{{ video.resolution }}.{{ source }}.{{ video.codec|vcodec }}.{{ audio_main.codec|acodec }}-{{ audio_main.channels_label }}.{{ audio|map(attribute='language')|langs|join('-') }}{% if subs %}.SUB-{{ subs|map(attribute='language')|langs|join('-') }}{% endif %}{% if parts_total > 1 %}.CD{{ part }}{% endif %}'''
+# External subtitles. Extra vars: base (new video name without ext), lang (fr), language (fre),
+# forced, default, codec, title, n (1, 2… among subs with the same lang/forced), ext.
+subtitle = '''{{ base }}.{{ lang }}{% if n > 1 %}.{{ n }}{% endif %}{% if forced %}.forced{% endif %}.{{ ext }}'''
+# root = "/mnt/media/movies-sorted"
+
+[profiles.movies.vars]
+# Static variables, available in templates.
+# source = "DVD"
+
+# Conditional variables. Rules run in order; each matching rule overrides earlier values.
+# `when` is a template expression: video.height >= 1080, library == "Films DVD"
+# [[profiles.movies.rules]]
+# when = "video.height >= 1080"
+# set = { source = "BluRay" }
+
+[profiles.series]
+kind = "episode"
+libraries = []
+folder = '''{{ show.title }} ({{ show.year }}){% if show.ids.tvdb %} {tvdb-{{ show.ids.tvdb }}}{% endif %}/Season {{ season|pad }}'''
+file = '''{{ show.title }} - S{{ season|pad }}E{{ episode|pad }}{% if episode_end %}-E{{ episode_end|pad }}{% endif %} - {{ episode_title }}'''
+subtitle = '''{{ base }}.{{ lang }}{% if n > 1 %}.{{ n }}{% endif %}{% if forced %}.forced{% endif %}.{{ ext }}'''
+
+[profiles.series.vars]

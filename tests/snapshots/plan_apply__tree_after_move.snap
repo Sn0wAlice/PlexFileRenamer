@@ -1,0 +1,32 @@
+---
+source: tests/plan_apply.rs
+expression: "fx.tree().join(\"\\n\")"
+---
+data/elsewhere/
+data/elsewhere/diner.avi (300b)
+data/movies/
+data/movies/Face-Off (1997) {tmdb-754}/
+data/movies/Face-Off (1997) {tmdb-754}/.plexmatch (39b)
+data/movies/Face-Off (1997) {tmdb-754}/Face.Off.1997.1080p.DVD.H264.DTS-5.1.FR.SUB-FR.fr.forced.idx (20b)
+data/movies/Face-Off (1997) {tmdb-754}/Face.Off.1997.1080p.DVD.H264.DTS-5.1.FR.SUB-FR.fr.forced.sub (21b)
+data/movies/Face-Off (1997) {tmdb-754}/Face.Off.1997.1080p.DVD.H264.DTS-5.1.FR.SUB-FR.mkv (700b)
+data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/
+data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/.plexmatch (85b)
+data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/Le.Fabuleux.Destin.d.Amelie.Poulain.2001.576p.DVD.MPEG2.AC3-5.1.FR-EN.SUB-FR.fr.srt (10b)
+data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/Le.Fabuleux.Destin.d.Amelie.Poulain.2001.576p.DVD.MPEG2.AC3-5.1.FR-EN.SUB-FR.mkv (1000b)
+data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/Le.Fabuleux.Destin.d.Amelie.Poulain.2001.576p.DVD.MPEG2.AC3-5.1.FR-EN.SUB-FR.nfo (11b)
+data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/poster.jpg (12b)
+data/movies/Ocean's Eleven (2001)/
+data/movies/Ocean's Eleven (2001)/.plexmatch (51b)
+data/movies/Ocean's Eleven (2001)/Oceans.Eleven.2001.480p.DVD.MPEG4.MP3-2.0.EN.CD1.avi (500b)
+data/movies/Ocean's Eleven (2001)/Oceans.Eleven.2001.480p.DVD.MPEG4.MP3-2.0.EN.CD2.avi (501b)
+data/movies/Star Wars - Episode IV - A New Hope (1977) {tmdb-11}/
+data/movies/Star Wars - Episode IV - A New Hope (1977) {tmdb-11}/.plexmatch (64b)
+data/movies/Star Wars - Episode IV - A New Hope (1977) {tmdb-11}/Star.Wars.Episode.IV.A.New.Hope.1977.2160p.DVD.H265.TrueHD-7.1.EN-FR.SUB-FR.mkv (2000b)
+data/movies/Star Wars - Episode IV - A New Hope (1977) {tmdb-11}/Star.Wars.Episode.IV.A.New.Hope.1977.480p.DVD.MPEG2.AC3-2.0.EN.mkv (900b)
+data/tv/
+data/tv/Kaamelott (2005) {tvdb-79175}/
+data/tv/Kaamelott (2005) {tvdb-79175}/.plexmatch (42b)
+data/tv/Kaamelott (2005) {tvdb-79175}/Season 01/
+data/tv/Kaamelott (2005) {tvdb-79175}/Season 01/Kaamelott - S01E01 - Heat.mkv (400b)
+data/tv/Kaamelott (2005) {tvdb-79175}/Season 01/Kaamelott - S01E03-E04 - La Tarte aux myrtilles.mkv (450b)

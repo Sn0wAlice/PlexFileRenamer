@@ -1,0 +1,23 @@
+---
+source: tests/plan_apply.rs
+expression: "common::plan_text(&fx, &p)"
+---
+rename video <TMP>/data/movies/amelie/Amelie.DVDRip.mkv -> <TMP>/data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/Le.Fabuleux.Destin.d.Amelie.Poulain.2001.576p.DVD.MPEG2.AC3-5.1.FR-EN.SUB-FR.mkv
+rename video <TMP>/data/movies/Oceans 11/oceans.cd1.avi -> <TMP>/data/movies/Ocean's Eleven (2001)/Oceans.Eleven.2001.480p.DVD.MPEG4.MP3-2.0.EN.CD1.avi
+rename video <TMP>/data/movies/Oceans 11/oceans.cd2.avi -> <TMP>/data/movies/Ocean's Eleven (2001)/Oceans.Eleven.2001.480p.DVD.MPEG4.MP3-2.0.EN.CD2.avi
+rename video <TMP>/data/movies/sw/starwars.uhd.mkv -> <TMP>/data/movies/Star Wars - Episode IV - A New Hope (1977) {tmdb-11}/Star.Wars.Episode.IV.A.New.Hope.1977.2160p.DVD.H265.TrueHD-7.1.EN-FR.SUB-FR.mkv
+rename video <TMP>/data/movies/sw/starwars.dvd.mkv -> <TMP>/data/movies/Star Wars - Episode IV - A New Hope (1977) {tmdb-11}/Star.Wars.Episode.IV.A.New.Hope.1977.480p.DVD.MPEG2.AC3-2.0.EN.mkv
+rename video <TMP>/data/movies/faceoff.mkv -> <TMP>/data/movies/Face-Off (1997) {tmdb-754}/Face.Off.1997.1080p.DVD.H264.DTS-5.1.FR.SUB-FR.mkv
+skipped video <TMP>/data/elsewhere/diner.avi -> <TMP>/data/elsewhere/diner.avi  (file is outside every library root (check path_map))
+rename video <TMP>/data/tv/Kaamelott/k101.mkv -> <TMP>/data/tv/Kaamelott (2005) {tvdb-79175}/Season 01/Kaamelott - S01E01 - Heat.mkv
+rename video <TMP>/data/tv/Kaamelott/k103-104.mkv -> <TMP>/data/tv/Kaamelott (2005) {tvdb-79175}/Season 01/Kaamelott - S01E03-E04 - La Tarte aux myrtilles.mkv
+rename subtitle <TMP>/data/movies/amelie/Amelie.DVDRip.fr.srt -> <TMP>/data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/Le.Fabuleux.Destin.d.Amelie.Poulain.2001.576p.DVD.MPEG2.AC3-5.1.FR-EN.SUB-FR.fr.srt
+rename subtitle <TMP>/data/movies/faceoff.forced.idx -> <TMP>/data/movies/Face-Off (1997) {tmdb-754}/Face.Off.1997.1080p.DVD.H264.DTS-5.1.FR.SUB-FR.fr.forced.idx
+rename sidecar <TMP>/data/movies/faceoff.forced.sub -> <TMP>/data/movies/Face-Off (1997) {tmdb-754}/Face.Off.1997.1080p.DVD.H264.DTS-5.1.FR.SUB-FR.fr.forced.sub
+rename sidecar <TMP>/data/movies/amelie/Amelie.DVDRip.nfo -> <TMP>/data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/Le.Fabuleux.Destin.d.Amelie.Poulain.2001.576p.DVD.MPEG2.AC3-5.1.FR-EN.SUB-FR.nfo
+rename sidecar <TMP>/data/movies/amelie/poster.jpg -> <TMP>/data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/poster.jpg
+rename plexmatch - -> <TMP>/data/movies/Face-Off (1997) {tmdb-754}/.plexmatch
+rename plexmatch - -> <TMP>/data/movies/Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/.plexmatch
+rename plexmatch - -> <TMP>/data/movies/Ocean's Eleven (2001)/.plexmatch
+rename plexmatch - -> <TMP>/data/movies/Star Wars - Episode IV - A New Hope (1977) {tmdb-11}/.plexmatch
+rename plexmatch - -> <TMP>/data/tv/Kaamelott (2005) {tvdb-79175}/.plexmatch

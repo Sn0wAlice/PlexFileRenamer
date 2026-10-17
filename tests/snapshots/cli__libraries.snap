@@ -1,0 +1,7 @@
+---
+source: tests/cli.rs
+expression: out
+---
+   1  movies  Films  [/data/movies]
+   2  shows   Séries  [/data/tv]
+   3  music   Musique  [/data/music]

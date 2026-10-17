@@ -1,0 +1,67 @@
+# Publishes a Linux x64 binary for the version in Cargo.toml.
+# Runs on every push to main, but only builds when the tag v<version> doesn't exist yet:
+# bump `version` in Cargo.toml to cut a new release.
+name: release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET: x86_64-unknown-linux-musl
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read version
+        id: v
+        run: |
+          v=$(cargo metadata --no-deps --format-version 1 | jq -r '.packages[0].version')
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          if gh release view "v$v" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Release v$v already exists, nothing to do."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install musl toolchain
+        if: steps.v.outputs.exists == 'false'
+        run: |
+          sudo apt-get update && sudo apt-get install -y musl-tools
+          rustup target add "$TARGET"
+
+      - uses: Swatinem/rust-cache@v2
+        if: steps.v.outputs.exists == 'false'
+
+      - name: Test
+        if: steps.v.outputs.exists == 'false'
+        run: cargo test --locked
+
+      # Static musl binary: runs on any x64 Linux (Debian, Alpine, NAS, Docker) without glibc worries.
+      - name: Build
+        if: steps.v.outputs.exists == 'false'
+        run: |
+          cargo build --release --locked --target "$TARGET"
+          name="plexfilerenamer-v${{ steps.v.outputs.version }}-linux-x86_64"
+          mkdir -p "dist/$name"
+          cp "target/$TARGET/release/plexfilerenamer" README.md "dist/$name/"
+          strip "dist/$name/plexfilerenamer"
+          tar -C dist -czf "dist/$name.tar.gz" "$name"
+          cp "target/$TARGET/release/plexfilerenamer" "dist/plexfilerenamer-linux-x86_64"
+          strip "dist/plexfilerenamer-linux-x86_64"
+          (cd dist && sha256sum "$name.tar.gz" plexfilerenamer-linux-x86_64 > SHA256SUMS)
+
+      - name: Publish release
+        if: steps.v.outputs.exists == 'false'
+        run: |
+          v="v${{ steps.v.outputs.version }}"
+          gh release create "$v" --target "$GITHUB_SHA" --title "$v" --generate-notes \
+            dist/*.tar.gz dist/plexfilerenamer-linux-x86_64 dist/SHA256SUMS

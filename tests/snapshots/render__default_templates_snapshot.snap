@@ -1,0 +1,13 @@
+---
+source: tests/render.rs
+expression: "out.join(\"\\n\")"
+---
+101 [movies] Le Fabuleux Destin d'Amélie Poulain (2001) {tmdb-194}/Le.Fabuleux.Destin.d.Amelie.Poulain.2001.576p.MPEG2.AC3-5.1.FR-EN.SUB-FR.mkv
+102 [movies] Ocean's Eleven (2001)/Oceans.Eleven.2001.480p.MPEG4.MP3-2.0.EN.CD1.avi
+102 [movies] Ocean's Eleven (2001)/Oceans.Eleven.2001.480p.MPEG4.MP3-2.0.EN.CD2.avi
+103 [movies] Star Wars - Episode IV - A New Hope (1977) {tmdb-11}/Star.Wars.Episode.IV.A.New.Hope.1977.2160p.H265.TrueHD-7.1.EN-FR.SUB-FR.mkv
+103 [movies] Star Wars - Episode IV - A New Hope (1977) {tmdb-11}/Star.Wars.Episode.IV.A.New.Hope.1977.480p.MPEG2.AC3-2.0.EN.mkv
+104 [movies] Face-Off (1997) {tmdb-754}/Face.Off.1997.1080p.H264.DTS-5.1.FR.SUB-FR.mkv
+105 [movies] Le Dîner de cons (1998)/Le.Diner.de.cons.1998.576p.MPEG4.avi
+203 [series] Kaamelott (2005) {tvdb-79175}/Season 01/Kaamelott - S01E01 - Heat.mkv
+204 [series] Kaamelott (2005) {tvdb-79175}/Season 01/Kaamelott - S01E03-E04 - La Tarte aux myrtilles.mkv
