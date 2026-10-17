@@ -143,21 +143,30 @@ pub fn open(path: &Path, immutable: bool) -> Result<Db> {
     Ok(db)
 }
 
+/// Plex ships its own SQLite: ICU collations (`icu_root`) and modules (`spellfix1`, ICU fts) that
+/// stock SQLite lacks. Unknown collations get a case-insensitive fallback (read-only, ordering only),
+/// and only the tables we use are introspected so Plex-only virtual tables are never touched.
 fn introspect(conn: &Connection) -> Result<HashMap<String, HashSet<String>>> {
+    conn.collation_needed(|c, name| {
+        c.create_collation(name, |a: &str, b: &str| {
+            a.to_lowercase().cmp(&b.to_lowercase())
+        })
+    })?;
     let mut out = HashMap::new();
-    let tables: Vec<String> = conn
-        .prepare("SELECT name FROM sqlite_master WHERE type = 'table'")?
-        .query_map([], |r| r.get(0))?
-        .collect::<Result<_, _>>()?;
-    for t in tables {
+    for (t, _) in REQUIRED {
+        let exists: bool = conn.query_row(
+            "SELECT EXISTS(SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?1)",
+            [t],
+            |r| r.get(0),
+        )?;
+        if !exists {
+            continue;
+        }
         let cols: HashSet<String> = conn
-            .prepare(&format!(
-                "PRAGMA table_info(\"{}\")",
-                t.replace('"', "\"\"")
-            ))?
+            .prepare(&format!("PRAGMA table_info(\"{t}\")"))?
             .query_map([], |r| r.get::<_, String>(1))?
             .collect::<Result<_, _>>()?;
-        out.insert(t, cols);
+        out.insert(t.to_string(), cols);
     }
     Ok(out)
 }
@@ -710,6 +719,33 @@ mod tests {
             date_of(SqlValue::Text("2001-04-25 00:00:00".into())).as_deref(),
             Some("2001-04-25")
         );
+    }
+
+    #[test]
+    fn unknown_icu_collation_falls_back() {
+        let c = Connection::open_in_memory().unwrap();
+        c.execute_batch(include_str!("../../tests/fixtures/plex_schema.sql"))
+            .unwrap();
+        c.execute_batch(
+            "INSERT INTO metadata_items (id, title_sort) VALUES (1, 'b'), (2, 'A');
+             CREATE INDEX i ON metadata_items (title_sort COLLATE NOCASE);
+             PRAGMA writable_schema = ON;
+             UPDATE sqlite_master SET sql = replace(sql, 'NOCASE', 'icu_root') WHERE name = 'i';
+             PRAGMA writable_schema = OFF;",
+        )
+        .unwrap();
+        let db = Db::from_conn(c).unwrap();
+        let ids: Vec<i64> = db
+            .conn
+            .prepare(
+                "SELECT id FROM metadata_items INDEXED BY i ORDER BY title_sort COLLATE icu_root",
+            )
+            .unwrap()
+            .query_map([], |r| r.get(0))
+            .unwrap()
+            .collect::<Result<_, _>>()
+            .unwrap();
+        assert_eq!(ids, [2, 1]);
     }
 
     #[test]
