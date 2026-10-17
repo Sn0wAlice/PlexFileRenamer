@@ -153,3 +153,18 @@ fn vars_have_everything() {
     );
     insta::assert_snapshot!(ctx);
 }
+
+/// examples/plexfilerenamer.toml must parse and render every fixture item.
+#[test]
+fn example_config_snapshot() {
+    let fx = common::build();
+    let cfg = fx.config(include_str!("../examples/plexfilerenamer.toml"));
+    let (engine, loaded) = common::load(&fx, &cfg, &Select::default());
+    let mut out = vec![];
+    for l in &loaded {
+        let p = &cfg.profiles[l.profile.as_deref().unwrap()];
+        let r = engine.render_path(p, &l.ctx, &l.item.ext).unwrap();
+        out.push(format!("{}/{}.{}", r.dirs.join("/"), r.stem, l.item.ext));
+    }
+    insta::assert_snapshot!(out.join("\n"));
+}

@@ -119,6 +119,7 @@ Une variable absente vaut une chaîne vide. Après rendu, les séparateurs orphe
 | `translit`, `upper`, `lower`, `title_case`, `truncate(n)` | |
 | `vcodec`, `acodec` | Libellé à partir de `[mapping.vcodec]` / `[mapping.acodec]` (`mpeg2video`→`MPEG2`, `hevc`→`H265`, `dca`→`DTS`…). |
 | `lang(style)` / `langs(style)` | Styles `iso1` (FR), `iso2` (FRE), `iso2t` (FRA), `name` (French), `native` (Français), ou `[mapping.languages]`. `langs` dédoublonne en gardant l'ordre et retire `und`. |
+| `keep_langs(liste)` | Ne garde que les langues listées, sous n'importe quelle forme (`fr`, `fre`, `French`). À placer avant `langs` : `subs\|map(attribute='language')\|keep_langs(['fr','en'])\|langs`. Avec une liste vide ou absente, tout est gardé. Marche aussi pour `audio`. |
 | `pad(n=2)` | `1` → `01`. |
 | Builtins minijinja | `default`, `join`, `map`, `replace`, `first`… |
 

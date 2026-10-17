@@ -1,0 +1,72 @@
+# Config "tout dedans" : à copier en ./plexfilerenamer.toml à côté du binaire.
+# Seules les clés différentes des défauts sont listées (le reste vient de `init`).
+
+collision = "fail"        # rien n'est fait tant qu'il reste un conflit (ou "suffix" pour .v2)
+clean_empty_dirs = true   # supprime les anciens dossiers devenus vides
+write_plexmatch = true    # .plexmatch avec l'id TMDB/IMDB/TVDB dans chaque dossier
+
+# Si Plex tourne dans Docker : chemin vu par Plex -> chemin sur cette machine.
+# [[path_map]]
+# from = "/movies"
+# to   = "/mnt/media/movies"
+# [[path_map]]
+# from = "/tv"
+# to   = "/mnt/media/tv"
+
+[[replace]]
+pattern = " & "
+with = " and "
+
+[mapping.acodec]
+eac3 = "DDP"              # E-AC3 = Dolby Digital Plus
+
+# ---------------------------------------------------------------- Films
+[profiles.movies]
+kind = "movie"
+folder = '''{{ title }} ({{ year }}){% if edition %} {edition-{{ edition }}}{% endif %}{% if ids.tmdb %} {tmdb-{{ ids.tmdb }}}{% endif %}'''
+# Titre.Année[.Édition].Résolution.Source[.HDR][.10bit].CodecVidéo.CodecAudio-Canaux.Langues[.SUB-Langues][.FORCED][.v2][.CD1]
+file = '''{{ title|scene }}.{{ year }}
+{%- if edition %}.{{ edition|scene }}{% endif -%}
+.{{ video.resolution }}.{{ source }}
+{%- if video.hdr %}.{{ video.hdr }}{% endif -%}
+{%- if video.bit_depth and video.bit_depth > 8 %}.{{ video.bit_depth }}bit{% endif -%}
+.{{ video.codec|vcodec }}
+.{% if audio_main.profile == 'ma' %}DTS-HD.MA{% elif audio_main.profile == 'hra' %}DTS-HD.HRA{% else %}{{ audio_main.codec|acodec }}{% endif %}-{{ audio_main.channels_label }}
+.{{ audio|map(attribute='language')|langs|join('-') }}
+{%- set sl = subs|map(attribute='language')|keep_langs(sub_langs)|langs %}
+{%- if sl %}.SUB-{{ sl|join('-') }}{% endif -%}
+{%- if subs|selectattr('forced')|map(attribute='language')|keep_langs(sub_langs)|list %}.FORCED{% endif -%}
+{%- if versions_total > 1 %}.v{{ version }}{% endif -%}
+{%- if parts_total > 1 %}.CD{{ part }}{% endif %}'''
+subtitle = '''{{ base }}.{{ lang }}{% if n > 1 %}.{{ n }}{% endif %}{% if forced %}.forced{% endif %}.{{ ext }}'''
+
+[profiles.movies.vars]
+source = "DVD"
+# Only these subtitle languages appear in the name (any form: fr, fre, French). Remove the line to list all.
+sub_langs = ["fr", "en"]
+
+# Rules run in order, the last match wins.
+[[profiles.movies.rules]]
+when = "video.resolution in ['720p', '1080p']"
+set = { source = "BluRay" }
+
+[[profiles.movies.rules]]
+when = "video.resolution == '2160p'"
+set = { source = "UHD.BluRay" }
+
+# ---------------------------------------------------------------- Séries
+[profiles.series]
+kind = "episode"
+folder = '''{{ show.title }} ({{ show.year }}){% if show.ids.tvdb %} {tvdb-{{ show.ids.tvdb }}}{% endif %}/Season {{ season|pad }}'''
+# Show - S01E01[-E02] - Titre [1080p DVD H264 AC3-5.1 FR-EN SUB-FR]
+file = '''{{ show.title }} - S{{ season|pad }}E{{ episode|pad }}{% if episode_end %}-E{{ episode_end|pad }}{% endif %} - {{ episode_title }} [{{ video.resolution }} {{ source }}{% if video.hdr %} {{ video.hdr }}{% endif %} {{ video.codec|vcodec }}{% if audio_main %} {{ audio_main.codec|acodec }}-{{ audio_main.channels_label }} {{ audio|map(attribute='language')|langs|join('-') }}{% endif %}{% set sl = subs|map(attribute='language')|keep_langs(sub_langs)|langs %}{% if sl %} SUB-{{ sl|join('-') }}{% endif %}]'''
+subtitle = '''{{ base }}.{{ lang }}{% if n > 1 %}.{{ n }}{% endif %}{% if forced %}.forced{% endif %}.{{ ext }}'''
+
+[profiles.series.vars]
+source = "DVD"
+# Only these subtitle languages appear in the name (any form: fr, fre, French). Remove the line to list all.
+sub_langs = ["fr", "en"]
+
+[[profiles.series.rules]]
+when = "video.resolution in ['720p', '1080p', '2160p']"
+set = { source = "WEB" }

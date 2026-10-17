@@ -250,6 +250,24 @@ impl Engine {
                 Ok(out)
             },
         );
+        let mm = m.clone();
+        // Keep only the language codes listed in `keep` (any form: fr, fre, fra, French).
+        // An undefined/empty list keeps everything, so `keep_langs(sub_langs)` works without the var.
+        env.add_filter(
+            "keep_langs",
+            move |v: Value, keep: Value| -> Result<Vec<Value>, minijinja::Error> {
+                if v.is_undefined() || v.is_none() {
+                    return Ok(vec![]);
+                }
+                let norm = |x: &Value| mm.lang(&text(x), Some("iso1"));
+                let wanted: Vec<String> = if keep.is_undefined() || keep.is_none() {
+                    vec![]
+                } else {
+                    keep.try_iter()?.map(|k| norm(&k)).collect()
+                };
+                Ok(v.try_iter()?.filter(|x| wanted.is_empty() || wanted.contains(&norm(x))).collect())
+            },
+        );
         Engine {
             env,
             replace: cfg
@@ -418,6 +436,18 @@ mod tests {
         assert_eq!(collapse("Show -  - x"), "Show - x");
         assert_eq!(collapse("Mr. & Mrs. Smith ()"), "Mr. & Mrs. Smith");
         assert_eq!(collapse("Spider-Man.2002"), "Spider-Man.2002");
+    }
+
+    #[test]
+    fn keep_langs_filter() {
+        let e = Engine::new(&Config::default());
+        let ctx = serde_json::json!({"subs": [{"language": "ger"}, {"language": "fra"}, {"language": "eng"}, {"language": "fre"}],
+                                     "sub_langs": ["fr", "English"]});
+        let t = "{{ subs|map(attribute='language')|keep_langs(sub_langs)|langs|join('-') }}";
+        assert_eq!(e.render_raw(t, &ctx).unwrap(), "FR-EN");
+        // Without the list, everything is kept.
+        let t = "{{ subs|map(attribute='language')|keep_langs(nope)|langs|join('-') }}";
+        assert_eq!(e.render_raw(t, &ctx).unwrap(), "DE-FR-EN");
     }
 
     #[test]
