@@ -79,7 +79,14 @@ pub fn load(db: &Db, cfg: &Config, engine: &Engine, sel: &Select) -> Result<Vec<
             .cloned();
         for s in &mut item.subs {
             if let Some(p) = &s.path {
-                s.path = Some(cfg.map_path(p));
+                // Some Plex versions percent-encode file:// urls.
+                let raw = cfg.map_path(p);
+                let decoded = cfg.map_path(&crate::db::pct_decode(p));
+                s.path = Some(if !exists(&raw) && exists(&decoded) {
+                    decoded
+                } else {
+                    raw
+                });
             }
         }
         item.finalize(&cfg.mapping);
@@ -510,6 +517,14 @@ pub fn build(loaded: &[Loaded], cfg: &Config, engine: &Engine) -> Plan {
 
         for s in l.item.subs.iter().filter(|s| s.external) {
             let Some(sp) = &s.path else { continue };
+            if !exists(sp) {
+                ops.push(Op {
+                    status: Status::Skipped,
+                    reason: Some("subtitle file not found (stale in Plex?)".into()),
+                    ..sub_op(&v, g, sp, sp)
+                });
+                continue;
+            }
             let (sstem, sext) = split_name(file_name(sp));
             let lang = cfg.mapping.lang(&s.language, Some("iso1")).to_lowercase();
             let n = sub_n.entry((lang.clone(), s.forced)).or_insert(0);

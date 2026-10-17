@@ -606,8 +606,8 @@ fn fill_streams(it: &mut Item, streams: &[Stream], color_trc: &str) {
                     forced: s.forced || s.x("forced") == "1",
                     default: s.default,
                     external,
-                    path: external
-                        .then(|| s.url.strip_prefix("file://").unwrap_or(&s.url).to_string()),
+                    // Only file:// is a file next to the video; blob://, media://… are managed by Plex.
+                    path: s.url.strip_prefix("file://").map(String::from),
                 })
             }
             _ => {}
@@ -648,7 +648,7 @@ pub fn parse_extra(s: &str) -> HashMap<String, String> {
         .collect()
 }
 
-fn pct_decode(s: &str) -> String {
+pub fn pct_decode(s: &str) -> String {
     let b = s.as_bytes();
     let mut out = Vec::with_capacity(b.len());
     let mut i = 0;

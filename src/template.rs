@@ -265,7 +265,9 @@ impl Engine {
                 } else {
                     keep.try_iter()?.map(|k| norm(&k)).collect()
                 };
-                Ok(v.try_iter()?.filter(|x| wanted.is_empty() || wanted.contains(&norm(x))).collect())
+                Ok(v.try_iter()?
+                    .filter(|x| wanted.is_empty() || wanted.contains(&norm(x)))
+                    .collect())
             },
         );
         Engine {
